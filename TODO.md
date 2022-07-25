@@ -3,10 +3,16 @@
   - [ ] Merge engines
   - [ ] Create a train entity
   - [ ] Take input form file
+  - [ ] Keep route details in json
 
 # MAYBE
 
 # DONE
+  - [x] Extract distanceFromSource method
+  - [x] Extract distanceBetween method
+  - [x] Extract isDestination method
+  - [x] Extract isSource method
+  - [x] Extract stationExists method
   - [x] Add engine
   - [x] Format display
   - [x] Extracted createRoute function

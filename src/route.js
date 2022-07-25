@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 const { Station } = require('./station.js');
 
 class Route {
@@ -13,6 +14,45 @@ class Route {
 
   addStation(station) {
     this.#stations.push(station);
+  }
+
+  #stationExistsInStations(station) {
+    return this.#stations.some(({ code }) => code === station);
+  }
+
+  #isSource(code) {
+    return this.#source.code === code;
+  }
+
+  #isDestination(code) {
+    return this.#destination.code === code;
+  }
+
+  stationExists({ code }) {
+    return this.#isSource(code) || this.#isDestination(code) ||
+      this.#stationExistsInStations(code);
+  }
+
+  #distanceFromSource(code) {
+    if (this.#isSource(code)) {
+      return this.#source.distanceFromSource;
+    }
+
+    if (this.#isDestination(code)) {
+      return this.#destination.distanceFromSource;
+    }
+
+    for (const station of this.#stations) {
+      if (station.code === code) {
+        return station.distanceFromSource;
+      }
+    }
+  }
+
+  distanceBetween({ code: firstStationCode }, { code: secondStationCode }) {
+    const firstStationsDistance = this.#distanceFromSource(firstStationCode);
+    const secondStationsDistance = this.#distanceFromSource(secondStationCode);
+    return Math.abs(firstStationsDistance - secondStationsDistance);
   }
 
   get stations() {

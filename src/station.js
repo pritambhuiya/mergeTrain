@@ -9,6 +9,10 @@ class Station {
     this.#distanceFromSource = distanceFormSource;
   }
 
+  get distanceFromSource() {
+    return this.#distanceFromSource;
+  }
+
   get code() {
     return this.#code;
   }
