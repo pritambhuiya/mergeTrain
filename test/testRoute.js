@@ -17,14 +17,23 @@ describe('Route', () => {
     agara = new Station('AGA', 'AGARA', 20);
   });
 
-  describe('stationsFrom', () => {
+  describe('stationsAfter', () => {
     it('Should return stations after SLM', () => {
       route.addStation(salem);
       route.addStation(agara);
 
-      const expected =
-        [['SLM', 'SALEM', 0], ['AGA', 'AGARA', 10], ['NDL', 'NEW DELHI', 20]];
-      assert.deepStrictEqual(route.stationsFrom('SLM'), expected);
+      const expected = [['AGA', 'AGARA', 10], ['NDL', 'NEW DELHI', 20]];
+      assert.deepStrictEqual(route.stationsAfter('SLM'), expected);
+    });
+
+    it('Should return empty array if station is destination', () => {
+      const expected = [];
+      assert.deepStrictEqual(route.stationsAfter('NDL'), expected);
+    });
+
+    it('Should return stations except source if station is source', () => {
+      const expected = [['NDL', 'NEW DELHI', 30]];
+      assert.deepStrictEqual(route.stationsAfter('CHN'), expected);
     });
   });
 

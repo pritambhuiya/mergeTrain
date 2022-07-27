@@ -29,7 +29,7 @@ class Route {
     return Math.abs(firstStationsDistance - secondStationsDistance);
   }
 
-  stationsFrom(stationCode) {
+  stationsAfter(stationCode) {
     const locationOfStation = this.stationCodes.indexOf(stationCode) + 1;
     const remainingStations = this.allStations.slice(locationOfStation);
 
@@ -45,7 +45,8 @@ class Route {
   }
 
   get stationCodes() {
-    return this.#stations.map(station => station.code);
+    return this.allStations.map(station => station.code);
+    // return this.#stations.map(station => station.code);
   }
 
   get allStations() {

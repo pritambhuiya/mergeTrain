@@ -44,12 +44,12 @@ const main = () => {
   const routeB = createRouteB();
 
   const trainA = {
-    route: routeA, junctions: ['HYB', 'NGP'],
+    route: routeA, junctions: ['HYB', 'BPL'],
     bogies: ['NDL', 'NDL', 'KRN', 'GHY', 'SLM', 'NJP', 'NGP', 'BLR']
   };
 
   const trainB = {
-    route: routeB, junctions: ['HYB', 'NGP'],
+    route: routeB, junctions: ['HYB', 'BPL'],
     bogies: ['NJP', 'GHY', 'AGA', 'PNE', 'MAO', 'BPL', 'PTA']
   };
 

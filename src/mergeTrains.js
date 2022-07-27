@@ -20,7 +20,7 @@ const merge = (bogiesA, bogiesB) => {
   return [firstBogieB].concat(merge(bogiesA, bogiesB.slice(1)));
 };
 
-const stationsFrom = (junction, route) => route.stationsFrom(junction);
+const stationsAfter = (junction, route) => route.stationsAfter(junction);
 
 const bogieExists = (bogies, bogie) => bogies.includes(bogie[0]);
 
@@ -28,10 +28,10 @@ const countBogies = (bogies, station) =>
   bogies.filter(bogie => bogie === station[0]);
 
 const bogiesAfterJunction =
-  (allStationsFromJunction, remainingBogiesOfTrain) => {
+  (allStationsAfterJunction, remainingBogiesOfTrain) => {
     const remainingBogies = [];
 
-    allStationsFromJunction.forEach((station) => {
+    allStationsAfterJunction.forEach((station) => {
       if (bogieExists(remainingBogiesOfTrain, station)) {
 
         const numberOfBogies = countBogies(remainingBogiesOfTrain, station);
@@ -49,21 +49,23 @@ const mergeTrains = (trainA, trainB) => {
   const [firstJunctionA] = trainA.junctions;
   const [firstJunctionB, lastJunctionB] = trainB.junctions;
 
-  const stationsFromJunctionA = stationsFrom(firstJunctionA, routeA);
-  const stationsFromJunctionB = stationsFrom(firstJunctionB, routeB);
+  const stationsAfterJunctionA = stationsAfter(firstJunctionA, routeA);
+  const stationsAfterJunctionB = stationsAfter(firstJunctionB, routeB);
 
-  const indexOfLastJunction = routeA.indexOf(lastJunctionB);
-  const stationsFromLastJunctionInRouteB =
-    stationsFromJunctionB.slice(indexOfLastJunction);
+  const indexOfFirstJunction = routeB.indexOf(firstJunctionB);
+  const indexOfLastJunction = routeB.indexOf(lastJunctionB);
 
-  const allStationsFromJunction =
-    merge(stationsFromJunctionA, stationsFromLastJunctionInRouteB);
+  const stationsAfterLastJunctionInRouteB =
+    stationsAfterJunctionB.slice(indexOfLastJunction - indexOfFirstJunction);
+
+  const allStationsAfterJunction =
+    merge(stationsAfterJunctionA, stationsAfterLastJunctionInRouteB);
 
   const bogiesAfterJunctionA =
-    bogiesAfterJunction(allStationsFromJunction, remainingBogiesOfTrainA);
+    bogiesAfterJunction(allStationsAfterJunction, remainingBogiesOfTrainA);
 
   const bogiesAfterJunctionB =
-    bogiesAfterJunction(allStationsFromJunction, remainingBogiesOfTrainB);
+    bogiesAfterJunction(allStationsAfterJunction, remainingBogiesOfTrainB);
 
   const mergedTrain = merge(bogiesAfterJunctionA, bogiesAfterJunctionB);
   return mergedTrain.reverse().map((bogie) => bogie[0]);
