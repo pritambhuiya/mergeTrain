@@ -16,6 +16,10 @@ class Station {
   get code() {
     return this.#code;
   }
+
+  get name() {
+    return this.#name;
+  }
 }
 
 module.exports = { Station };

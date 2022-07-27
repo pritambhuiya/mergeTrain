@@ -14,4 +14,8 @@ describe('Station', () => {
   it('Should give distanceFromSource of the station', () => {
     assert.deepStrictEqual(chennai.distanceFromSource, 10);
   });
+
+  it('Should give name of the station', () => {
+    assert.deepStrictEqual(chennai.name, 'CHENNAI');
+  });
 });

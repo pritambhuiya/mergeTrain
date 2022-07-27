@@ -1,6 +1,4 @@
 # TODO
-  - [ ] Merge trains
-  - [ ] Merge engines
   - [ ] Create a train entity
   - [ ] Take input form file
   - [ ] Keep route details in json
@@ -8,6 +6,8 @@
 # MAYBE
 
 # DONE
+  - [x] Merge engines
+  - [x] Merge trains
   - [x] Extract distanceFromSource method
   - [x] Extract distanceBetween method
   - [x] Extract isDestination method

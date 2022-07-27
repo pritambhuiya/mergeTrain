@@ -18,7 +18,7 @@ describe('CreateRoute', () => {
     ];
 
     const route = createRoute(source, destination, [salem, kurnool]);
-    assert.deepStrictEqual(route.stations, expected);
+    assert.deepStrictEqual(route.allStations, expected);
   });
 });
 
@@ -29,28 +29,28 @@ describe('detachBogiesBeforeJunction', () => {
     const destination = ['NDL', 'NEW DELHI', 50];
     const stations = [
       ['SLM', 'SALEM', 10],
-      ['KRN', 'KURNOOL', 20],
       ['HYB', 'HYDERABAD', 30],
-      ['AGA', 'AGRA', 40]
+      ['BPL', 'BHOPAL', 40],
+      ['AGA', 'AGRA', 50]
     ];
 
     route = createRoute(source, destination, stations);
   });
 
-  it('Should return all bogies after HYB', () => {
+  it('Should return all bogies after HYB including another route', () => {
     const train = {
-      route: route, junction: 'HYB', bogies: ['NJP', 'KRN', 'SLM', 'AGA']
+      route: route, junction: ['HYB', 'NGP'], bogies: ['NJP', 'SLM', 'AGA']
     };
     assert.deepStrictEqual(detachBogiesBeforeJunction(train), ['NJP', 'AGA']);
   });
 
   it('Should return all bogies if no bogies are before HYB', () => {
-    const train = { route: route, junction: 'HYB', bogies: ['NJP', 'AGA'] };
+    const train = { route: route, junction: ['HYB', 'NGP'], bogies: ['NJP', 'AGA'] };
     assert.deepStrictEqual(detachBogiesBeforeJunction(train), ['NJP', 'AGA']);
   });
 
   it('Should return empty array if no bogies are remaining', () => {
-    const train = { route: route, junction: 'HYB', bogies: ['SLM', 'KRN'] };
+    const train = { route: route, junction: ['HYB', 'NGP'], bogies: ['SLM'] };
     assert.deepStrictEqual(detachBogiesBeforeJunction(train), []);
   });
 });

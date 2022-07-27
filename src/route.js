@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 const { Station } = require('./station.js');
 
 class Route {
@@ -16,46 +15,40 @@ class Route {
     this.#stations.push(station);
   }
 
-  #stationExistsInStations(station) {
-    return this.#stations.some(({ code }) => code === station);
-  }
-
-  #isSource(code) {
-    return this.#source.code === code;
-  }
-
-  #isDestination(code) {
-    return this.#destination.code === code;
-  }
-
-  stationExists({ code }) {
-    return this.#isSource(code) || this.#isDestination(code) ||
-      this.#stationExistsInStations(code);
-  }
-
   #distanceFromSource(code) {
-    if (this.#isSource(code)) {
-      return this.#source.distanceFromSource;
-    }
-
-    if (this.#isDestination(code)) {
-      return this.#destination.distanceFromSource;
-    }
-
-    for (const station of this.#stations) {
+    for (const station of this.allStations) {
       if (station.code === code) {
         return station.distanceFromSource;
       }
     }
   }
 
-  distanceBetween({ code: firstStationCode }, { code: secondStationCode }) {
+  #distanceBetween(firstStationCode, secondStationCode) {
     const firstStationsDistance = this.#distanceFromSource(firstStationCode);
     const secondStationsDistance = this.#distanceFromSource(secondStationCode);
     return Math.abs(firstStationsDistance - secondStationsDistance);
   }
 
-  get stations() {
+  stationsFrom(stationCode) {
+    const locationOfStation = this.stationCodes.indexOf(stationCode) + 1;
+    const remainingStations = this.allStations.slice(locationOfStation);
+
+    return remainingStations.map((station) => {
+      const remainingDistance =
+        this.#distanceBetween(station.code, stationCode);
+      return [station.code, station.name, remainingDistance];
+    });
+  }
+
+  indexOf(code) {
+    return this.stationCodes.indexOf(code);
+  }
+
+  get stationCodes() {
+    return this.#stations.map(station => station.code);
+  }
+
+  get allStations() {
     return [this.#source, ...this.#stations, this.#destination];
   }
 }

@@ -1,5 +1,6 @@
 const { createRoute } = require('./src/route.js');
-const { detachBogiesBeforeJunction, displayNewTrain } =
+const { mergeTrains } = require('./src/mergeTrains.js');
+const { detachBogiesBeforeJunction, displayNewTrain, displayMergedTrain } =
   require('./src/train.js');
 
 const createRouteA = () => {
@@ -43,17 +44,22 @@ const main = () => {
   const routeB = createRouteB();
 
   const trainA = {
-    route: routeA, junction: 'HYB',
+    route: routeA, junction: ['HYB', 'NGP'],
     bogies: ['NDL', 'NDL', 'KRN', 'GHY', 'SLM', 'NJP', 'NGP', 'BLR']
   };
 
   const trainB = {
-    route: routeB, junction: 'HYB',
+    route: routeB, junction: ['HYB', 'NGP'],
     bogies: ['NJP', 'GHY', 'AGA', 'PNE', 'MAO', 'BPL', 'PTA']
   };
 
-  displayNewTrain('A', detachBogiesBeforeJunction(trainA));
-  displayNewTrain('B', detachBogiesBeforeJunction(trainB));
+  trainA.remainingBogiesOfTrainA = detachBogiesBeforeJunction(trainA);
+  trainB.remainingBogiesOfTrainB = detachBogiesBeforeJunction(trainB);
+  const mergedTrain = mergeTrains(trainA, trainB);
+
+  displayNewTrain('A', trainA.remainingBogiesOfTrainA);
+  displayNewTrain('B', trainB.remainingBogiesOfTrainB);
+  displayMergedTrain('A', 'B', mergedTrain);
 };
 
 main();
