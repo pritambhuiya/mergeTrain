@@ -71,4 +71,4 @@ const mergeTrains = (trainA, trainB) => {
   return mergedTrain.reverse().map((bogie) => bogie[0]);
 };
 
-module.exports = { mergeTrains };
+module.exports = { mergeTrains, merge };

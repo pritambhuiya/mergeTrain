@@ -1,5 +1,7 @@
+/* eslint-disable max-statements */
 const { createRoute } = require('./src/route.js');
 const { mergeTrains } = require('./src/mergeTrains.js');
+const { Train } = require('./src/trainClass.js');
 const { detachBogiesBeforeJunction, displayNewTrain, displayMergedTrain } =
   require('./src/train.js');
 
@@ -42,16 +44,13 @@ const createRouteB = () => {
 const main = () => {
   const routeA = createRouteA();
   const routeB = createRouteB();
+  const junctions = ['HYB', 'BPL'];
 
-  const trainA = {
-    route: routeA, junctions: ['HYB', 'BPL'],
-    bogies: ['NDL', 'NDL', 'KRN', 'GHY', 'SLM', 'NJP', 'NGP', 'BLR']
-  };
+  const bogiesA = ['NDL', 'NDL', 'KRN', 'GHY', 'SLM', 'NJP', 'NGP', 'BLR'];
+  const bogiesB = ['NJP', 'GHY', 'AGA', 'PNE', 'MAO', 'BPL', 'PTA'];
 
-  const trainB = {
-    route: routeB, junctions: ['HYB', 'BPL'],
-    bogies: ['NJP', 'GHY', 'AGA', 'PNE', 'MAO', 'BPL', 'PTA']
-  };
+  const trainA = new Train(routeA, junctions, bogiesA);
+  const trainB = new Train(routeB, junctions, bogiesB);
 
   trainA.remainingBogies = detachBogiesBeforeJunction(trainA);
   trainB.remainingBogies = detachBogiesBeforeJunction(trainB);

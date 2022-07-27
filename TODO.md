@@ -1,5 +1,5 @@
 # TODO
-  - [ ] Create a train entity
+  - [ ] Add methods in Train like merge train 
   - [ ] Take input form file
   - [ ] Keep route details in json
   - [ ] Rename trainClass.js to train.js
@@ -8,6 +8,7 @@
   - [ ] Consider properties of Train as private
 
 # DONE
+  - [x] Create a train entity
   - [x] Change junction to junctions
   - [x] Change remainingBogiesOfTrainA & B as remainingBogies
   - [x] Merge engines
