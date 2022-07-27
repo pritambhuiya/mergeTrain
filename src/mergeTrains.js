@@ -43,11 +43,11 @@ const bogiesAfterJunction =
   };
 
 const mergeTrains = (trainA, trainB) => {
-  const { route: routeA, remainingBogiesOfTrainA } = trainA;
-  const { route: routeB, remainingBogiesOfTrainB } = trainB;
+  const { route: routeA, remainingBogies: remainingBogiesOfTrainA } = trainA;
+  const { route: routeB, remainingBogies: remainingBogiesOfTrainB } = trainB;
 
-  const [firstJunctionA] = trainA.junction;
-  const [firstJunctionB, lastJunctionB] = trainB.junction;
+  const [firstJunctionA] = trainA.junctions;
+  const [firstJunctionB, lastJunctionB] = trainB.junctions;
 
   const stationsFromJunctionA = stationsFrom(firstJunctionA, routeA);
   const stationsFromJunctionB = stationsFrom(firstJunctionB, routeB);

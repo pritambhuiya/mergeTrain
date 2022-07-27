@@ -24,15 +24,15 @@ describe('mergeTrains', () => {
     const routeB = createRoute(sourceB, destinationB, stationsB);
 
     trainA = {
-      route: routeA, junction: ['HYB', 'NGP'],
+      route: routeA, junctions: ['HYB', 'NGP'],
       bogies: ['NDL', 'NDL', 'GHY'],
-      remainingBogiesOfTrainA: ['NDL', 'NDL', 'GHY']
+      remainingBogies: ['NDL', 'NDL', 'GHY']
     };
 
     trainB = {
-      route: routeB, junction: ['HYB', 'NGP'],
+      route: routeB, junctions: ['HYB', 'NGP'],
       bogies: ['GHY', 'PNE'],
-      remainingBogiesOfTrainB: ['GHY']
+      remainingBogies: ['GHY']
     };
   });
 
@@ -42,14 +42,14 @@ describe('mergeTrains', () => {
   });
 
   it('Should return a train if other train has no bogies left', () => {
-    trainB.remainingBogiesOfTrainB = [];
+    trainB.remainingBogies = [];
     assert.deepStrictEqual(
       mergeTrains(trainA, trainB), ['GHY', 'NDL', 'NDL']);
   });
 
   it('Should return empty array if both trains have no bogies left', () => {
-    trainA.remainingBogiesOfTrainA = [];
-    trainB.remainingBogiesOfTrainB = [];
+    trainA.remainingBogies = [];
+    trainB.remainingBogies = [];
     assert.deepStrictEqual(
       mergeTrains(trainA, trainB), []);
   });

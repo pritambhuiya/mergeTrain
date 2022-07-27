@@ -10,9 +10,9 @@ const displayMergedTrain = (train1, train2, bogies) => {
 const getBogiesAfterJunction = (bogies, stationsBeforeJunction) =>
   bogies.filter(bogie => !stationsBeforeJunction.includes(bogie));
 
-const detachBogiesBeforeJunction = ({ bogies, route, junction }) => {
+const detachBogiesBeforeJunction = ({ bogies, route, junctions }) => {
   const stationCodes = route.stationCodes;
-  const junctionLocation = route.indexOf(junction[0]);
+  const junctionLocation = route.indexOf(junctions[0]);
 
   const stationsBeforeJunction = stationCodes.slice(0, junctionLocation);
   return getBogiesAfterJunction(bogies, stationsBeforeJunction);

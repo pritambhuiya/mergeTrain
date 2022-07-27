@@ -2,10 +2,14 @@
   - [ ] Create a train entity
   - [ ] Take input form file
   - [ ] Keep route details in json
+  - [ ] Rename trainClass.js to train.js
 
 # MAYBE
+  - [ ] Consider properties of Train as private
 
 # DONE
+  - [x] Change junction to junctions
+  - [x] Change remainingBogiesOfTrainA & B as remainingBogies
   - [x] Merge engines
   - [x] Merge trains
   - [x] Extract distanceFromSource method

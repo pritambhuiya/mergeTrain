@@ -44,21 +44,21 @@ const main = () => {
   const routeB = createRouteB();
 
   const trainA = {
-    route: routeA, junction: ['HYB', 'NGP'],
+    route: routeA, junctions: ['HYB', 'NGP'],
     bogies: ['NDL', 'NDL', 'KRN', 'GHY', 'SLM', 'NJP', 'NGP', 'BLR']
   };
 
   const trainB = {
-    route: routeB, junction: ['HYB', 'NGP'],
+    route: routeB, junctions: ['HYB', 'NGP'],
     bogies: ['NJP', 'GHY', 'AGA', 'PNE', 'MAO', 'BPL', 'PTA']
   };
 
-  trainA.remainingBogiesOfTrainA = detachBogiesBeforeJunction(trainA);
-  trainB.remainingBogiesOfTrainB = detachBogiesBeforeJunction(trainB);
+  trainA.remainingBogies = detachBogiesBeforeJunction(trainA);
+  trainB.remainingBogies = detachBogiesBeforeJunction(trainB);
   const mergedTrain = mergeTrains(trainA, trainB);
 
-  displayNewTrain('A', trainA.remainingBogiesOfTrainA);
-  displayNewTrain('B', trainB.remainingBogiesOfTrainB);
+  displayNewTrain('A', trainA.remainingBogies);
+  displayNewTrain('B', trainB.remainingBogies);
   displayMergedTrain('A', 'B', mergedTrain);
 };
 
