@@ -2,12 +2,12 @@
   - [ ] Add methods in Train like merge train 
   - [ ] Take input form file
   - [ ] Keep route details in json
-  - [ ] Rename trainClass.js to train.js
 
 # MAYBE
   - [ ] Consider properties of Train as private
 
 # DONE
+  - [x] Rename trainClass.js to train.js
   - [x] Consider removing trainClass and testTrainClass
   - [x] Consider getBogiesAfterJunction as bogiesAfterJunction
   - [x] Consider detachBogiesBefore and bogiesAfterJunction as Train method
