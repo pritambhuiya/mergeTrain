@@ -2,22 +2,34 @@
 const { merge } = require('./merge.js');
 
 class Train {
+  #route;
+  #junctions;
+  #bogies;
+
   constructor(route, junctions, bogies) {
-    this.route = route;
-    this.junctions = junctions;
-    this.bogies = bogies;
+    this.#route = route;
+    this.#junctions = junctions;
+    this.#bogies = bogies;
   }
 
-  set remainingBogies(remainingBogies) {
-    this.bogies = remainingBogies;
+  set bogies(remainingBogies) {
+    this.#bogies = remainingBogies;
   }
 
-  get remainingBogies() {
-    return this.bogies;
+  get bogies() {
+    return this.#bogies;
   }
 
-  bogiesAfterJunction(stationsBeforeJunction) {
-    return this.bogies.filter(bogie =>
+  get junctions() {
+    return this.#junctions;
+  }
+
+  get route() {
+    return this.#route;
+  }
+
+  #bogiesAfterJunction(stationsBeforeJunction) {
+    return this.#bogies.filter(bogie =>
       !stationsBeforeJunction.includes(bogie));
   }
 
@@ -26,7 +38,7 @@ class Train {
     const junctionLocation = this.route.indexOf(junction);
 
     const stationsBeforeJunction = stationCodes.slice(0, junctionLocation);
-    this.bogies = this.bogiesAfterJunction(stationsBeforeJunction);
+    this.#bogies = this.#bogiesAfterJunction(stationsBeforeJunction);
   }
 
   stationsAfter(junction) {
@@ -36,7 +48,7 @@ class Train {
   mergeTrains(trainB) {
     const { route: routeB, bogies: remainingBogiesOfTrainB } = trainB;
 
-    const [firstJunctionA] = this.junctions;
+    const [firstJunctionA] = this.#junctions;
     const [firstJunctionB, lastJunctionB] = trainB.junctions;
 
     const stationsAfterJunctionA = this.stationsAfter(firstJunctionA);
@@ -52,7 +64,7 @@ class Train {
       merge(stationsAfterJunctionA, stationsAfterLastJunctionInRouteB);
 
     const bogiesAfterJunctionA = bogiesDetailsAfterJunction(
-      allStationsAfterLastJunction, this.remainingBogies);
+      allStationsAfterLastJunction, this.bogies);
 
     const bogiesAfterJunctionB = bogiesDetailsAfterJunction(
       allStationsAfterLastJunction, remainingBogiesOfTrainB);

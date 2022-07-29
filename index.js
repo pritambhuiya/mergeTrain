@@ -55,8 +55,8 @@ const main = () => {
   trainB.detachBogiesBefore(junctions[0]);
   const mergedTrain = trainA.mergeTrains(trainB);
 
-  displayNewTrain('A', trainA.remainingBogies);
-  displayNewTrain('B', trainB.remainingBogies);
+  displayNewTrain('A', trainA.bogies);
+  displayNewTrain('B', trainB.bogies);
   displayMergedTrain('A', 'B', mergedTrain);
 };
 

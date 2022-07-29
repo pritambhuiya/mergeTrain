@@ -1,12 +1,14 @@
 # TODO
-  - [ ] Add methods in Train like merge train 
   - [ ] Take input form file
   - [ ] Keep route details in json
 
 # MAYBE
-  - [ ] Consider properties of Train as private
 
 # DONE
+  - [x] Consider bogiesAfterJunction method of Train as private
+  - [x] Consider properties of Train as private
+  - [x] Add stationsAfter as a method of Train
+  - [x] Add mergeTrain as a method of Train
   - [x] Rename trainClass.js to train.js
   - [x] Consider removing trainClass and testTrainClass
   - [x] Consider getBogiesAfterJunction as bogiesAfterJunction
