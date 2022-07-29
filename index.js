@@ -1,8 +1,8 @@
 /* eslint-disable max-statements */
 const { createRoute } = require('./src/route.js');
 const { mergeTrains } = require('./src/mergeTrains.js');
-const { Train } = require('./src/trainClass.js');
-const { detachBogiesBeforeJunction, displayNewTrain, displayMergedTrain } =
+const { Train } = require('./src/train.js');
+const { displayNewTrain, displayMergedTrain } =
   require('./src/train.js');
 
 const createRouteA = () => {
@@ -52,8 +52,8 @@ const main = () => {
   const trainA = new Train(routeA, junctions, bogiesA);
   const trainB = new Train(routeB, junctions, bogiesB);
 
-  trainA.remainingBogies = detachBogiesBeforeJunction(trainA);
-  trainB.remainingBogies = detachBogiesBeforeJunction(trainB);
+  trainA.detachBogiesBefore(junctions[0]);
+  trainB.detachBogiesBefore(junctions[0]);
   const mergedTrain = mergeTrains(trainA, trainB);
 
   displayNewTrain('A', trainA.remainingBogies);

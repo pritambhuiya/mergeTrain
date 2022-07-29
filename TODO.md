@@ -8,6 +8,11 @@
   - [ ] Consider properties of Train as private
 
 # DONE
+  - [x] Consider removing trainClass and testTrainClass
+  - [x] Consider getBogiesAfterJunction as bogiesAfterJunction
+  - [x] Consider detachBogiesBefore and bogiesAfterJunction as Train method
+  - [x] Consider renaming detachBogiesBeforeJunction detachBogiesBefore
+  - [x] Consider passing junction in detachBogiesBeforeJunction
   - [x] Create a train entity
   - [x] Change junction to junctions
   - [x] Change remainingBogiesOfTrainA & B as remainingBogies

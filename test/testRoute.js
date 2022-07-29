@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { Route } = require('../src/route.js');
+const { Route, createRoute } = require('../src/route.js');
 const { Station } = require('../src/station.js');
 
 describe('Route', () => {
@@ -48,6 +48,25 @@ describe('Route', () => {
     it('Should add a station', () => {
       route.addStation(salem);
       const expected = [destination, source, salem];
+      assert.deepStrictEqual(route.allStations, expected);
+    });
+  });
+
+  describe('CreateRoute', () => {
+    it('Should create a route', () => {
+      const source = ['CHN', 'CHENNAI', 0];
+      const destination = ['NDL', 'NEW DELHI', 50];
+      const salem = ['SLM', 'SALEM', 10];
+      const kurnool = ['KRN', 'KURNOOL', 20];
+
+      const expected = [
+        new Station(source),
+        new Station(salem),
+        new Station(kurnool),
+        new Station(destination),
+      ];
+
+      const route = createRoute(source, destination, [salem, kurnool]);
       assert.deepStrictEqual(route.allStations, expected);
     });
   });
