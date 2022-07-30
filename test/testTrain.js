@@ -67,7 +67,7 @@ describe('Train', () => {
   });
 
   describe('mergeTrains', () => {
-    it('Should merge trains', () => {
+    it('Should merge two trains', () => {
       assert.deepStrictEqual(
         trainA.mergeTrains(trainB), ['GHY', 'GHY', 'NDL', 'NDL']);
     });

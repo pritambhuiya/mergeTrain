@@ -41,18 +41,40 @@ class Train {
     this.#bogies = this.#bogiesAfterJunction(stationsBeforeJunction);
   }
 
-  stationsAfter(junction) {
+  #stationsAfter(junction) {
     return this.route.stationsAfter(junction);
   }
 
+  #bogieExists(bogie) {
+    return this.#bogies.includes(bogie[0]);
+  }
+
+  #getDuplicateBogies(station) {
+    return this.bogies.filter(bogie => bogie === station[0]);
+  }
+
+  #bogiesDetailsAfterJunction(allStationsAfterJunction) {
+    const remainingBogies = [];
+
+    allStationsAfterJunction.forEach((station) => {
+      if (this.#bogieExists(station)) {
+
+        const duplicateBogies = this.#getDuplicateBogies(station);
+        duplicateBogies.forEach(() => remainingBogies.push(station));
+      }
+    });
+
+    return remainingBogies;
+  }
+
   mergeTrains(trainB) {
-    const { route: routeB, bogies: remainingBogiesOfTrainB } = trainB;
+    const { route: routeB } = trainB;
 
     const [firstJunctionA] = this.#junctions;
     const [firstJunctionB, lastJunctionB] = trainB.junctions;
 
-    const stationsAfterJunctionA = this.stationsAfter(firstJunctionA);
-    const stationsAfterJunctionB = trainB.stationsAfter(firstJunctionB);
+    const stationsAfterJunctionA = this.#stationsAfter(firstJunctionA);
+    const stationsAfterJunctionB = trainB.#stationsAfter(firstJunctionB);
 
     const indexOfFirstJunction = routeB.indexOf(firstJunctionB);
     const indexOfLastJunction = routeB.indexOf(lastJunctionB);
@@ -63,45 +85,24 @@ class Train {
     const allStationsAfterLastJunction =
       merge(stationsAfterJunctionA, stationsAfterLastJunctionInRouteB);
 
-    const bogiesAfterJunctionA = bogiesDetailsAfterJunction(
-      allStationsAfterLastJunction, this.bogies);
+    const bogiesAfterJunctionA = this.#bogiesDetailsAfterJunction(
+      allStationsAfterLastJunction);
 
-    const bogiesAfterJunctionB = bogiesDetailsAfterJunction(
-      allStationsAfterLastJunction, remainingBogiesOfTrainB);
+    const bogiesAfterJunctionB = trainB.#bogiesDetailsAfterJunction(
+      allStationsAfterLastJunction);
 
     const mergedTrain = merge(bogiesAfterJunctionA, bogiesAfterJunctionB);
     return mergedTrain.reverse().map((bogie) => bogie[0]);
   }
 }
 
-const bogieExists = (bogies, bogie) => bogies.includes(bogie[0]);
+// const displayNewTrain = (trainName, allBogies) =>
+//   console.log(`ARRIVAL TRAIN_${trainName} ENGINE`, allBogies);
 
-const getDuplicateBogies = (bogies, station) =>
-  bogies.filter(bogie => bogie === station[0]);
+// const displayMergedTrain = (train1, train2, allBogies) => {
+//   const train =
+//     `DEPARTURE TRAIN_${train1}${train2} ENGINE ENGINE ` + allBogies;
+//   console.log(train);
+// };
 
-const bogiesDetailsAfterJunction =
-  (allStationsAfterJunction, remainingBogiesOfTrain) => {
-    const remainingBogies = [];
-
-    allStationsAfterJunction.forEach((station) => {
-      if (bogieExists(remainingBogiesOfTrain, station)) {
-
-        const duplicateBogies =
-          getDuplicateBogies(remainingBogiesOfTrain, station);
-        duplicateBogies.forEach(() => remainingBogies.push(station));
-      }
-    });
-
-    return remainingBogies;
-  };
-
-const displayNewTrain = (trainName, bogies) =>
-  console.log(`ARRIVAL TRAIN_${trainName} ENGINE`, bogies.join(' '));
-
-const displayMergedTrain = (train1, train2, bogies) => {
-  const train =
-    `DEPARTURE TRAIN_${train1}${train2} ENGINE ENGINE ` + bogies.join(' ');
-  console.log(train);
-};
-
-module.exports = { Train, displayNewTrain, displayMergedTrain };
+module.exports = { Train };

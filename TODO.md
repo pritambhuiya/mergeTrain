@@ -1,10 +1,12 @@
 # TODO
-  - [ ] Take input form file
   - [ ] Keep route details in json
 
 # MAYBE
 
 # DONE
+  - [x] Consider boogieDetails as Train method
+  - [x] Create StartJourney.js
+  - [x] Take input form file
   - [x] Consider bogiesAfterJunction method of Train as private
   - [x] Consider properties of Train as private
   - [x] Add stationsAfter as a method of Train
