@@ -57,6 +57,21 @@ describe('Route', () => {
     });
   });
 
+  describe('stationsBefore', () => {
+    it('Should give stations before a station', () => {
+      assert.deepStrictEqual(route.stationsBefore('SLM'), ['CHN']);
+    });
+
+    it('Should give empty array if station is source', () => {
+      assert.deepStrictEqual(route.stationsBefore('CHN'), []);
+    });
+
+    it('Should give all stations if station is destination', () => {
+      route.addStation(salem);
+      assert.deepStrictEqual(route.stationsBefore('NDL'), ['CHN', 'SLM']);
+    });
+  });
+
   describe('CreateRoute', () => {
     it('Should create a route', () => {
       const junctions = ['SLM', 'KRN'];

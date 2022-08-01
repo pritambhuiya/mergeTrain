@@ -58,22 +58,22 @@ describe('Train', () => {
 
   });
 
-  describe.skip('detachBogiesBefore', () => {
+  describe('detachBogiesBefore', () => {
     it('Should return all bogies after HYB including another route', () => {
       trainA.bogies = ['NJP', 'SLM', 'AGA'];
-      trainA.bogies = ['NJP', 'AGA'];
+      trainA.detachBogiesBefore('HYB', routeA);
       assert.deepStrictEqual(trainA.bogies, ['NJP', 'AGA']);
     });
 
     it('Should return all bogies if no bogies are before HYB', () => {
       trainA.bogies = ['NJP', 'AGA'];
-      trainA.detachBogiesBefore('HYB');
+      trainA.detachBogiesBefore('HYB', routeA);
       assert.deepStrictEqual(trainA.bogies, ['NJP', 'AGA']);
     });
 
     it('Should return empty array if no bogies are remaining', () => {
       trainA.bogies = [];
-      trainA.detachBogiesBefore('HYB');
+      trainA.detachBogiesBefore('HYB', routeA);
       assert.deepStrictEqual(trainA.bogies, []);
     });
   });

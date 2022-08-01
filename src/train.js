@@ -134,6 +134,16 @@ class Train {
     return `TRAIN_${this.#name} ${engines}${allBogies}`;
   }
 
+  #bogiesAfterJunction(stationsBeforeJunction) {
+    return this.#bogies.filter(bogie =>
+      !stationsBeforeJunction.includes(bogie));
+  }
+
+  detachBogiesBefore(junction, route) {
+    const stationsBeforeJunction = route.stationsBefore(junction);
+    this.#bogies = this.#bogiesAfterJunction(stationsBeforeJunction);
+  }
+
 }
 
 module.exports = { Train };
