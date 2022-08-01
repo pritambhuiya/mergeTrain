@@ -4,6 +4,7 @@ const { createRoute } = require('./route.js');
 const createRouteA = () => {
   const source = ['CHN', 'CHENNAI', 0];
   const destination = ['NDL', 'NEW DELHI', 2700];
+  const junctions = ['HYB', 'BPL'];
   const stations = [
     ['SLM', 'SALEM', 350],
     ['BLR', 'BANGALORE', 550],
@@ -15,12 +16,13 @@ const createRouteA = () => {
     ['AGA', 'AGRA', 2500]
   ];
 
-  return createRoute(source, destination, stations);
+  return createRoute(source, destination, stations, junctions);
 };
 
 const createRouteB = () => {
   const source = ['TVC', 'TRIVANDRUM', 0];
   const destination = ['GHY', 'GUWAHATI', 4700];
+  const junctions = ['HYB', 'BPL'];
   const stations = [
     ['SRR', 'SHORANUR', 300],
     ['MAQ', 'MANGALORE', 600],
@@ -34,7 +36,7 @@ const createRouteB = () => {
     ['NJP', 'NEW JALPAIGURI', 4200]
   ];
 
-  return createRoute(source, destination, stations);
+  return createRoute(source, destination, stations, junctions);
 };
 
 const extractBogies = train => train.trim().split(' ').slice(2);

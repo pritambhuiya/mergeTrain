@@ -10,9 +10,11 @@ describe('Route', () => {
   let agara;
 
   beforeEach(() => {
+    const junctions = ['AGA', 'BPL'];
     source = new Station('CHN', 'CHENNAI', 0);
-    destination = new Station('NDL', 'NEW DELHI', 30);
-    route = new Route(source, destination);
+    destination = new Station('NDL', 'NEW DELHI', 50);
+    route = new Route(source, destination, junctions);
+
     salem = new Station('SLM', 'SALEM', 10);
     agara = new Station('AGA', 'AGARA', 20);
   });
@@ -45,17 +47,22 @@ describe('Route', () => {
   });
 
   describe('addStation', () => {
-    it('Should add a station', () => {
+    it('Should add a station and return true if station doesn\'t exist', () => {
+      assert.deepStrictEqual(route.addStation(salem), true);
+    });
+
+    it('Should not add a station & return false if station exists', () => {
       route.addStation(salem);
-      const expected = [destination, source, salem];
-      assert.deepStrictEqual(route.allStations, expected);
+      assert.deepStrictEqual(route.addStation(salem), false);
     });
   });
 
   describe('CreateRoute', () => {
     it('Should create a route', () => {
+      const junctions = ['SLM', 'KRN'];
       const source = ['CHN', 'CHENNAI', 0];
       const destination = ['NDL', 'NEW DELHI', 50];
+
       const salem = ['SLM', 'SALEM', 10];
       const kurnool = ['KRN', 'KURNOOL', 20];
 
@@ -66,7 +73,8 @@ describe('Route', () => {
         new Station(destination),
       ];
 
-      const route = createRoute(source, destination, [salem, kurnool]);
+      const route =
+        createRoute(source, destination, [salem, kurnool], junctions);
       assert.deepStrictEqual(route.allStations, expected);
     });
   });

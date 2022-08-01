@@ -105,4 +105,35 @@ class Train {
 //   console.log(train);
 // };
 
+class Train {
+  #name;
+  #numberOfEngines;
+  #bogies;
+
+  constructor(name, numberOfEngines, bogies) {
+    this.#name = name;
+    this.#numberOfEngines = numberOfEngines;
+    this.#bogies = bogies;
+  }
+
+  set bogies(remainingBogies) {
+    this.#bogies = remainingBogies;
+  }
+
+  get bogies() {
+    return this.#bogies;
+  }
+
+  toString() {
+    const allBogies = this.#bogies.join(' ');
+    if (!allBogies) {
+      return 'JOURNEY_ENDED';
+    }
+
+    const engines = 'ENGINE '.repeat(this.#numberOfEngines);
+    return `TRAIN_${this.#name} ${engines}${allBogies}`;
+  }
+
+}
+
 module.exports = { Train };

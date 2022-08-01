@@ -16,8 +16,8 @@ describe('Train', () => {
       ['HYB', 'HYDERABAD', 20],
       ['NGP', 'NAGPUR', 30]];
 
-    const routeA = createRoute(sourceA, destinationA, stationsA);
-    trainA = new Train(routeA, junctions, ['NDL', 'NDL', 'GHY']);
+    routeA = createRoute(sourceA, destinationA, stationsA, junctions);
+    trainA = new Train('A', 1, ['NDL', 'NDL', 'GHY']);
 
     const sourceB = ['TVC', 'TRIVANDRUM', 0];
     const destinationB = ['GHY', 'GUWAHATI', 50];
@@ -26,8 +26,8 @@ describe('Train', () => {
       ['HYB', 'HYDERABAD', 20],
       ['NGP', 'NAGPUR', 30]];
 
-    const routeB = createRoute(sourceB, destinationB, stationsB);
-    trainB = new Train(routeB, junctions, ['GHY', 'PNE']);
+    routeB = createRoute(sourceB, destinationB, stationsB, junctions);
+    trainB = new Train('B', 1, ['GHY', 'PNE']);
   });
 
   describe('bogies', () => {
@@ -46,7 +46,19 @@ describe('Train', () => {
     });
   });
 
-  describe('detachBogiesBefore', () => {
+  describe('toString', () => {
+    it('Should give representation of train', () => {
+      assert.deepStrictEqual(trainA.toString(), 'TRAIN_A ENGINE NDL NDL GHY');
+    });
+
+    it('Should give JOURNEY_ENDED if no bogie exists', () => {
+      trainA.bogies = [];
+      assert.deepStrictEqual(trainA.toString(), 'JOURNEY_ENDED');
+    });
+
+  });
+
+  describe.skip('detachBogiesBefore', () => {
     it('Should return all bogies after HYB including another route', () => {
       trainA.bogies = ['NJP', 'SLM', 'AGA'];
       trainA.bogies = ['NJP', 'AGA'];
