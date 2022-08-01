@@ -72,6 +72,26 @@ describe('Route', () => {
     });
   });
 
+  describe('stationsDetailsAfter', () => {
+    it('Should return stations after SLM', () => {
+      route.addStation(salem);
+      route.addStation(agara);
+
+      const expected = [['AGA', 'AGARA', 10], ['NDL', 'NEW DELHI', 40]];
+      assert.deepStrictEqual(route.stationsDetailsAfter('SLM'), expected);
+    });
+
+    it('Should return empty array if station is destination', () => {
+      const expected = [];
+      assert.deepStrictEqual(route.stationsDetailsAfter('NDL'), expected);
+    });
+
+    it('Should return stations except source if station is source', () => {
+      const expected = [['NDL', 'NEW DELHI', 50]];
+      assert.deepStrictEqual(route.stationsDetailsAfter('CHN'), expected);
+    });
+  });
+
   describe('CreateRoute', () => {
     it('Should create a route', () => {
       const junctions = ['SLM', 'KRN'];
