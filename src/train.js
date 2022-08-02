@@ -34,11 +34,11 @@ class Train {
 
   #bogiesDetailsAfterJunction(stationsDetails) {
     const remainingBogies = [];
-
     stationsDetails.forEach((station) => {
-      if (this.#stationExists(station[0])) {
+      const [stationCode] = station;
 
-        const sameBogies = this.#getSameBogies(station[0]);
+      if (this.#stationExists(stationCode)) {
+        const sameBogies = this.#getSameBogies(stationCode);
         sameBogies.forEach(() => remainingBogies.push(station));
       }
     });
@@ -51,7 +51,7 @@ class Train {
     const remainingBogiesB = train.#bogiesDetailsAfterJunction(stationDetails);
     const mergedBogies = merge(remainingBogiesA, remainingBogiesB);
 
-    const newBogies = mergedBogies.map(bogie => bogie[0]);
+    const newBogies = mergedBogies.map(([stationCode, ,]) => stationCode);
     const trainName = this.#name + train.#name.split('_')[1];
     return new Train(trainName, 'ENGINE ENGINE', newBogies.reverse());
     // return new Train('TRAIN_AB', 'ENGINE ENGINE', newBogies.reverse());

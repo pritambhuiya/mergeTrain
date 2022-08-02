@@ -50,7 +50,7 @@ const startJourney = (trains) => {
   const routeA = createRouteA();
   const routeB = createRouteB();
 
-  const junctions = ['HYB', 'BPL'];
+  const [firstJunction] = routeA.junctions;
   const [train1, train2] = parseInput(trains);
 
   const [nameA, engineA, ...bogiesA] = parseTrain(train1);
@@ -58,13 +58,13 @@ const startJourney = (trains) => {
 
   const trainA = new Train(nameA, engineA, bogiesA);
   const trainB = new Train(nameB, engineB, bogiesB);
-  const mergedRoute = routeA.mergeRoutes(routeB, junctions[0]);
+  const mergedRoute = routeA.mergeRoutes(routeB, firstJunction);
 
   const newTrainA = trainA.detachBogies(mergedRoute);
   const newTrainB = trainB.detachBogies(mergedRoute);
 
   const remainingStations =
-    mergedRoute.stationsDetailsFrom(junctions[0]).slice(1);
+    mergedRoute.stationsDetailsFrom(firstJunction).slice(1);
   const mergedTrain = trainA.mergeTrains(trainB, remainingStations);
 
   const trainAStatus = journeyStatus('ARRIVAL', newTrainA);

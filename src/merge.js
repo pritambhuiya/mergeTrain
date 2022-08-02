@@ -1,5 +1,3 @@
-const remainingDistance = (bogie) => bogie[2];
-
 const merge = (bogiesA, bogiesB) => {
   if (!bogiesB.length) {
     return bogiesA;
@@ -9,13 +7,15 @@ const merge = (bogiesA, bogiesB) => {
     return bogiesB;
   }
 
-  const firstBogieA = bogiesA[0];
-  const firstBogieB = bogiesB[0];
+  const [firstBogieA] = bogiesA;
+  const [firstBogieB] = bogiesB;
 
-  if (remainingDistance(firstBogieA) < remainingDistance(firstBogieB)) {
+  const [, , remainingDistanceOfFirstBogieA] = firstBogieA;
+  const [, , remainingDistanceOfFirstBogieB] = firstBogieB;
+
+  if (remainingDistanceOfFirstBogieA < remainingDistanceOfFirstBogieB) {
     return [firstBogieA].concat(merge(bogiesA.slice(1), bogiesB));
   }
-
   return [firstBogieB].concat(merge(bogiesA, bogiesB.slice(1)));
 };
 

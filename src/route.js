@@ -18,6 +18,10 @@ class Route {
     return [this.#source, ...this.#stations, this.#destination];
   }
 
+  get junctions() {
+    return this.#junctions;
+  }
+
   #stationExists({ code }) {
     return this.allStations.some(station => station.code === code);
   }
@@ -58,7 +62,7 @@ class Route {
     const mergedRoutes = merge(this.stationsDetailsFrom(fromStation),
       route.stationsDetailsFrom(fromStation));
 
-    const source = mergedRoutes[0];
+    const [source] = mergedRoutes;
     const [destination] = mergedRoutes.slice(-1);
     const stations = mergedRoutes.slice(1, -1);
 
