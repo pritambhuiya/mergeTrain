@@ -6,12 +6,4 @@ const main = (inputFilePath) => {
   console.log(startJourney(trains));
 };
 
-// const filePath = 'sample_input/input1.txt'; 
-// const filePath = 'sample_input/input2.txt';
-// const filePath = 'sample_input/input3.txt';
-
-// main(...process.argv.slice(2));
-// main(filePath);
-main('sample_input/input1.txt');
-main('sample_input/input2.txt');
-main('sample_input/input3.txt');
+main(...process.argv.slice(2));
