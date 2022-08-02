@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 const remainingDistance = (bogie) => bogie[2];
 
 const merge = (bogiesA, bogiesB) => {

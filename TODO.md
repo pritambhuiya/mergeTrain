@@ -4,6 +4,7 @@
 # MAYBE
 
 # DONE
+  - [x] Before adding a station in route verify station doesn't exist in route
   - [x] Consider boogieDetails as Train method
   - [x] Create StartJourney.js
   - [x] Take input form file

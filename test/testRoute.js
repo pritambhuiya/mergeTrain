@@ -6,37 +6,19 @@ describe('Route', () => {
   let route;
   let source;
   let destination;
+  let junctions;
+
   let salem;
   let agara;
 
   beforeEach(() => {
-    const junctions = ['AGA', 'BPL'];
+    junctions = ['AGA', 'BPL'];
     source = new Station('CHN', 'CHENNAI', 0);
     destination = new Station('NDL', 'NEW DELHI', 50);
     route = new Route(source, destination, junctions);
 
     salem = new Station('SLM', 'SALEM', 10);
     agara = new Station('AGA', 'AGARA', 20);
-  });
-
-  describe('stationsAfter', () => {
-    it('Should return stations after SLM', () => {
-      route.addStation(salem);
-      route.addStation(agara);
-
-      const expected = [['AGA', 'AGARA', 10], ['NDL', 'NEW DELHI', 20]];
-      assert.deepStrictEqual(route.stationsAfter('SLM'), expected);
-    });
-
-    it('Should return empty array if station is destination', () => {
-      const expected = [];
-      assert.deepStrictEqual(route.stationsAfter('NDL'), expected);
-    });
-
-    it('Should return stations except source if station is source', () => {
-      const expected = [['NDL', 'NEW DELHI', 30]];
-      assert.deepStrictEqual(route.stationsAfter('CHN'), expected);
-    });
   });
 
   describe('allStations', () => {
@@ -57,38 +39,53 @@ describe('Route', () => {
     });
   });
 
-  describe('stationsBefore', () => {
-    it('Should give stations before a station', () => {
-      assert.deepStrictEqual(route.stationsBefore('SLM'), ['CHN']);
-    });
-
-    it('Should give empty array if station is source', () => {
-      assert.deepStrictEqual(route.stationsBefore('CHN'), []);
-    });
-
-    it('Should give all stations if station is destination', () => {
-      route.addStation(salem);
-      assert.deepStrictEqual(route.stationsBefore('NDL'), ['CHN', 'SLM']);
-    });
-  });
-
-  describe('stationsDetailsAfter', () => {
+  describe('stationsDetailsFrom', () => {
     it('Should return stations after SLM', () => {
       route.addStation(salem);
       route.addStation(agara);
 
-      const expected = [['AGA', 'AGARA', 10], ['NDL', 'NEW DELHI', 40]];
-      assert.deepStrictEqual(route.stationsDetailsAfter('SLM'), expected);
+      const expected = [['AGA', 'AGARA', 0], ['NDL', 'NEW DELHI', 30]];
+      assert.deepStrictEqual(route.stationsDetailsFrom('AGA'), expected);
     });
 
-    it('Should return empty array if station is destination', () => {
-      const expected = [];
-      assert.deepStrictEqual(route.stationsDetailsAfter('NDL'), expected);
+    it('Should return destination if station is destination', () => {
+      const expected = [['NDL', 'NEW DELHI', 0]];
+      assert.deepStrictEqual(route.stationsDetailsFrom('NDL'), expected);
     });
 
-    it('Should return stations except source if station is source', () => {
-      const expected = [['NDL', 'NEW DELHI', 50]];
-      assert.deepStrictEqual(route.stationsDetailsAfter('CHN'), expected);
+    it('Should return all stations if station is source', () => {
+      const expected = [['CHN', 'CHENNAI', 0], ['NDL', 'NEW DELHI', 50]];
+      assert.deepStrictEqual(route.stationsDetailsFrom('CHN'), expected);
+    });
+  });
+
+  describe('mergeRoutes', () => {
+    it('Should merge stations of the route', () => {
+      const source2 = new Station('PNE', 'PUNE', 0);
+      const destination2 = new Station('ITJ', 'ITRASI', 60);
+      const route2 = new Route(source2, destination2, junctions);
+
+      const bhopal = new Station('BPL', 'BHOPAL', 30);
+      const guhawati = new Station('GHY', 'GUHAWATI', 40);
+
+      route.addStation(salem);
+      route.addStation(agara);
+      route.addStation(bhopal);
+
+      route2.addStation(agara);
+      route2.addStation(bhopal);
+      route2.addStation(guhawati);
+      const newRoute = route.mergeRoutes(route2, 'AGA');
+
+      const expected = [
+        ['AGA', 'AGARA', 0],
+        ['BPL', 'BHOPAL', 10],
+        ['GHY', 'GUHAWATI', 20],
+        ['NDL', 'NEW DELHI', 30],
+        ['ITJ', 'ITRASI', 40]
+      ];
+
+      assert.deepStrictEqual(newRoute.stationsDetailsFrom('AGA'), expected);
     });
   });
 

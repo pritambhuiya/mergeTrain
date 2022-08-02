@@ -39,42 +39,40 @@ const createRouteB = () => {
   return createRoute(source, destination, stations, junctions);
 };
 
-const extractBogies = train => train.trim().split(' ').slice(2);
+const parseTrain = train => train.trim().split(' ');
 
-const parseInput = (trains) => trains.split('\n').map(extractBogies);
+const parseInput = (trains) => trains.split('\n');
 
-const allBogies = (bogies) => bogies.join(' ');
-
-const journeyDetails = (trainA, trainB, mergedTrain) => {
-  const trains = [];
-  trains.push(`ARRIVAL TRAIN_A ENGINE ${allBogies(trainA.bogies)}`);
-  trains.push(`ARRIVAL TRAIN_B ENGINE ${allBogies(trainB.bogies)}`);
-
-  let mergedTrainStatus = 'JOURNEY_ENDED';
-  if (allBogies(mergedTrain)) {
-    mergedTrainStatus =
-      'DEPARTURE TRAIN_AB ENGINE ENGINE ' + allBogies(mergedTrain);
-  }
-
-  trains.push(mergedTrainStatus);
-  return trains;
-};
+const journeyStatus = (trainStatus, train) =>
+  [trainStatus, train.toString()].join(' ');
 
 const startJourney = (trains) => {
   const routeA = createRouteA();
   const routeB = createRouteB();
 
-  const [bogiesA, bogiesB] = parseInput(trains);
   const junctions = ['HYB', 'BPL'];
+  const [train1, train2] = parseInput(trains);
 
-  const trainA = new Train(routeA, junctions, bogiesA);
-  const trainB = new Train(routeB, junctions, bogiesB);
+  const [nameA, engineA, ...bogiesA] = parseTrain(train1);
+  const [nameB, engineB, ...bogiesB] = parseTrain(train2);
 
-  trainA.detachBogiesBefore(junctions[0]);
-  trainB.detachBogiesBefore(junctions[0]);
+  const trainA = new Train(nameA, engineA, bogiesA);
+  const trainB = new Train(nameB, engineB, bogiesB);
+  const mergedRoute = routeA.mergeRoutes(routeB, junctions[0]);
 
-  const mergedTrain = trainA.mergeTrains(trainB);
-  return journeyDetails(trainA, trainB, mergedTrain).join('\n');
+  const newTrainA = trainA.detachBogies(mergedRoute);
+  const newTrainB = trainB.detachBogies(mergedRoute);
+
+  const remainingStations =
+    mergedRoute.stationsDetailsFrom(junctions[0]).slice(1);
+  const mergedTrain = trainA.mergeTrains(trainB, remainingStations);
+
+  const trainAStatus = journeyStatus('ARRIVAL', newTrainA);
+  const trainBStatus = journeyStatus('ARRIVAL', newTrainB);
+  const mergedTrainStatus = mergedTrain.bogies.length ?
+    journeyStatus('DEPARTURE', mergedTrain) : 'JOURNEY_ENDED';
+
+  return [trainAStatus, trainBStatus, mergedTrainStatus].join('\n');
 };
 
-module.exports = { startJourney, parseInput };
+module.exports = { startJourney, parseInput, parseTrain };

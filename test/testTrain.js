@@ -5,29 +5,27 @@ const assert = require('assert');
 describe('Train', () => {
   let trainA;
   let trainB;
+  let routeA;
+  let stations;
 
   beforeEach(() => {
     const junctions = ['HYB', 'NGP'];
 
     const sourceA = ['CHN', 'CHENNAI', 0];
     const destinationA = ['NDL', 'NEW DELHI', 40];
-    const stationsA = [
-      ['SLM', 'SALEM', 10],
-      ['HYB', 'HYDERABAD', 20],
-      ['NGP', 'NAGPUR', 30]];
+    const stationsA = [['SLM', 'SALEM', 10], ['AGA', 'AGARA', 20]];
 
     routeA = createRoute(sourceA, destinationA, stationsA, junctions);
-    trainA = new Train('A', 1, ['NDL', 'NDL', 'GHY']);
+    trainA = new Train('TRAIN_A', 'ENGINE', ['NDL', 'NDL', 'GHY']);
 
-    const sourceB = ['TVC', 'TRIVANDRUM', 0];
-    const destinationB = ['GHY', 'GUWAHATI', 50];
-    const stationsB = [
-      ['PNE', 'PUNE', 10],
-      ['HYB', 'HYDERABAD', 20],
-      ['NGP', 'NAGPUR', 30]];
+    stations = [
+      ['HYB', 'HYDERABAD', 0],
+      ['NGP', 'NAGPUR', 10],
+      ['NDL', 'NEW DELHI', 20],
+      ['GHY', 'GUHAWATI', 30]
+    ];
 
-    routeB = createRoute(sourceB, destinationB, stationsB, junctions);
-    trainB = new Train('B', 1, ['GHY', 'PNE']);
+    trainB = new Train('TRAIN_B', 'ENGINE', ['GHY', 'PNE']);
   });
 
   describe('bogies', () => {
@@ -36,12 +34,12 @@ describe('Train', () => {
     });
 
     it('Should give empty array if no bogies are remaining', () => {
-      trainA.bogies = [];
+      trainA = new Train('TRAIN_A', 'ENGINE', []);
       assert.deepStrictEqual(trainA.bogies, []);
     });
 
     it('Should add remaining bogies', () => {
-      trainA.bogies = ['NDL', 'GHY'];
+      trainA = new Train('TRAIN_A', 'ENGINE', ['NDL', 'GHY']);
       assert.deepStrictEqual(trainA.bogies, ['NDL', 'GHY']);
     });
   });
@@ -51,48 +49,55 @@ describe('Train', () => {
       assert.deepStrictEqual(trainA.toString(), 'TRAIN_A ENGINE NDL NDL GHY');
     });
 
-    it('Should give JOURNEY_ENDED if no bogie exists', () => {
-      trainA.bogies = [];
-      assert.deepStrictEqual(trainA.toString(), 'JOURNEY_ENDED');
+    it('Should give TRAIN_A ENGINE if no bogie exists', () => {
+      trainA = new Train('TRAIN_A', 'ENGINE', []);
+      assert.deepStrictEqual(trainA.toString(), 'TRAIN_A ENGINE');
     });
 
   });
 
-  describe('detachBogiesBefore', () => {
+  describe('detachBogies', () => {
     it('Should return all bogies after HYB including another route', () => {
-      trainA.bogies = ['NJP', 'SLM', 'AGA'];
-      trainA.detachBogiesBefore('HYB', routeA);
-      assert.deepStrictEqual(trainA.bogies, ['NJP', 'AGA']);
+      trainA = new Train('TRAIN_A', 'ENGINE', ['NJP', 'SLM', 'AGA']);
+      const newTrainA = trainA.detachBogies(routeA);
+      assert.deepStrictEqual(newTrainA.bogies, ['SLM', 'AGA']);
     });
 
     it('Should return all bogies if no bogies are before HYB', () => {
-      trainA.bogies = ['NJP', 'AGA'];
-      trainA.detachBogiesBefore('HYB', routeA);
-      assert.deepStrictEqual(trainA.bogies, ['NJP', 'AGA']);
+      trainA = new Train('TRAIN_A', 'ENGINE', ['SLM', 'AGA']);
+      const newTrainA = trainA.detachBogies(routeA);
+      assert.deepStrictEqual(newTrainA.bogies, ['SLM', 'AGA']);
     });
 
     it('Should return empty array if no bogies are remaining', () => {
-      trainA.bogies = [];
-      trainA.detachBogiesBefore('HYB', routeA);
-      assert.deepStrictEqual(trainA.bogies, []);
+      trainA = new Train('TRAIN_A', 'ENGINE', []);
+      const newTrainA = trainA.detachBogies(routeA);
+      assert.deepStrictEqual(newTrainA.bogies, []);
     });
   });
 
   describe('mergeTrains', () => {
     it('Should merge two trains', () => {
+      const mergedTrain = trainA.mergeTrains(trainB, stations);
       assert.deepStrictEqual(
-        trainA.mergeTrains(trainB), ['GHY', 'GHY', 'NDL', 'NDL']);
+        mergedTrain.toString(), 'TRAIN_AB ENGINE ENGINE GHY GHY NDL NDL');
     });
 
     it('Should return a train if other train has no bogies left', () => {
-      trainB.bogies = [];
-      assert.deepStrictEqual(trainA.mergeTrains(trainB), ['GHY', 'NDL', 'NDL']);
+      trainB = new Train('TRAIN_B', 'ENGINE', []);
+
+      const mergedTrain = trainA.mergeTrains(trainB, stations);
+      assert.deepStrictEqual(
+        mergedTrain.toString(), 'TRAIN_AB ENGINE ENGINE GHY NDL NDL');
     });
 
     it('Should return empty array if both trains have no bogies left', () => {
-      trainA.bogies = [];
-      trainB.bogies = [];
-      assert.deepStrictEqual(trainA.mergeTrains(trainB), []);
+      trainA = new Train('TRAIN_A', 'ENGINE', []);
+      trainB = new Train('TRAIN_B', 'ENGINE', []);
+
+      const mergedTrain = trainA.mergeTrains(trainB, stations);
+      assert.deepStrictEqual(
+        mergedTrain.toString(), 'TRAIN_AB ENGINE ENGINE');
     });
   });
 });

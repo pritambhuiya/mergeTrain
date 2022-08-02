@@ -1,18 +1,38 @@
 const { Station } = require('./station.js');
+const { merge } = require('./merge.js');
 
 class Route {
   #source;
   #destination;
+  #junctions;
   #stations;
 
-  constructor(source, destination) {
+  constructor(source, destination, junctions) {
     this.#source = source;
     this.#destination = destination;
+    this.#junctions = junctions;
     this.#stations = [];
   }
 
+  get allStations() {
+    return [this.#source, ...this.#stations, this.#destination];
+  }
+
+  #stationExists({ code }) {
+    return this.allStations.some(station => station.code === code);
+  }
+
   addStation(station) {
+    if (this.#stationExists(station)) {
+      return false;
+    }
+
     this.#stations.push(station);
+    return true;
+  }
+
+  get stationCodes() {
+    return this.allStations.map(station => station.code);
   }
 
   #distanceFromSource(code) {
@@ -23,41 +43,33 @@ class Route {
     }
   }
 
-  #distanceBetween(firstStationCode, secondStationCode) {
-    const firstStationsDistance = this.#distanceFromSource(firstStationCode);
-    const secondStationsDistance = this.#distanceFromSource(secondStationCode);
-    return Math.abs(firstStationsDistance - secondStationsDistance);
-  }
+  stationsDetailsFrom(station) {
+    const location = this.stationCodes.indexOf(station);
+    const remainingStations = this.allStations.slice(location);
+    const distanceOfStationFromSource = this.#distanceFromSource(station);
 
-  stationsAfter(stationCode) {
-    const locationOfStation = this.stationCodes.indexOf(stationCode) + 1;
-    const remainingStations = this.allStations.slice(locationOfStation);
-
-    return remainingStations.map((station) => {
-      const remainingDistance =
-        this.#distanceBetween(station.code, stationCode);
-      return [station.code, station.name, remainingDistance];
+    return remainingStations.map(({ code, name, distanceFromSource }) => {
+      const distanceToCover = distanceFromSource - distanceOfStationFromSource;
+      return [code, name, distanceToCover];
     });
   }
 
-  indexOf(code) {
-    return this.stationCodes.indexOf(code);
-  }
+  mergeRoutes(route, fromStation) {
+    const mergedRoutes = merge(this.stationsDetailsFrom(fromStation),
+      route.stationsDetailsFrom(fromStation));
 
-  get stationCodes() {
-    return this.allStations.map(station => station.code);
-    // return this.#stations.map(station => station.code);
-  }
+    const source = mergedRoutes[0];
+    const [destination] = mergedRoutes.slice(-1);
+    const stations = mergedRoutes.slice(1, -1);
 
-  get allStations() {
-    return [this.#source, ...this.#stations, this.#destination];
+    return createRoute(source, destination, stations, this.#junctions[1]);
   }
 }
 
-const createRoute = (source, destination, stations) => {
+const createRoute = (source, destination, stations, junctions) => {
   const sourceStation = new Station(...source);
   const destinationStation = new Station(...destination);
-  const route = new Route(sourceStation, destinationStation);
+  const route = new Route(sourceStation, destinationStation, junctions);
 
   for (const station of stations) {
     route.addStation(new Station(...station));
