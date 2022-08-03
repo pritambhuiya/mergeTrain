@@ -11,4 +11,5 @@ const main = (inputFilePath) => {
   }
 };
 
-main(...process.argv.slice(2));
+const [, , inputFile] = process.argv;
+main(inputFile);

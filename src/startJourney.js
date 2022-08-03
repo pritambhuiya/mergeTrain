@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 const { Train } = require('./train.js');
 const { createRoute } = require('./route.js');
 
@@ -74,8 +75,8 @@ const startJourney = (trains) => {
   const newTrainA = trainA.detachBogies(mergedRoute);
   const newTrainB = trainB.detachBogies(mergedRoute);
 
-  const remainingStations =
-    mergedRoute.stationsDetailsFrom(firstJunction).slice(1);
+  const [, ...remainingStations] =
+    mergedRoute.stationsDetailsFrom(firstJunction);
   const mergedTrain = trainA.mergeTrains(trainB, remainingStations);
 
   return journeyDetails(newTrainA, newTrainB, mergedTrain);

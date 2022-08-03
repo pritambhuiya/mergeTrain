@@ -1,10 +1,10 @@
 {
-  "name": "greektrust",
+  "name": "train",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node geektrust.js",
     "test": "mocha"
   },
   "keywords": [],
