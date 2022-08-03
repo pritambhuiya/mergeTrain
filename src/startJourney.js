@@ -46,19 +46,30 @@ const parseInput = (trains) => trains.split('\n');
 const journeyStatus = (trainStatus, train) =>
   [trainStatus, train.toString()].join(' ');
 
+const createTrain = (train1) => {
+  const [nameA, engineA, ...bogiesA] = parseTrain(train1);
+  return new Train(nameA, engineA, bogiesA);
+};
+
+const journeyDetails = (trainA, trainB, mergedTrain) => {
+  const trainAStatus = journeyStatus('ARRIVAL', trainA);
+  const trainBStatus = journeyStatus('ARRIVAL', trainB);
+  const mergedTrainStatus = mergedTrain.bogies.length ?
+    journeyStatus('DEPARTURE', mergedTrain) : 'JOURNEY_ENDED';
+
+  return [trainAStatus, trainBStatus, mergedTrainStatus].join('\n');
+};
+
 const startJourney = (trains) => {
   const routeA = createRouteA();
   const routeB = createRouteB();
 
   const [firstJunction] = routeA.junctions;
+  const mergedRoute = routeA.mergeRoutes(routeB, firstJunction);
   const [train1, train2] = parseInput(trains);
 
-  const [nameA, engineA, ...bogiesA] = parseTrain(train1);
-  const [nameB, engineB, ...bogiesB] = parseTrain(train2);
-
-  const trainA = new Train(nameA, engineA, bogiesA);
-  const trainB = new Train(nameB, engineB, bogiesB);
-  const mergedRoute = routeA.mergeRoutes(routeB, firstJunction);
+  const trainA = createTrain(train1);
+  const trainB = createTrain(train2);
 
   const newTrainA = trainA.detachBogies(mergedRoute);
   const newTrainB = trainB.detachBogies(mergedRoute);
@@ -67,12 +78,7 @@ const startJourney = (trains) => {
     mergedRoute.stationsDetailsFrom(firstJunction).slice(1);
   const mergedTrain = trainA.mergeTrains(trainB, remainingStations);
 
-  const trainAStatus = journeyStatus('ARRIVAL', newTrainA);
-  const trainBStatus = journeyStatus('ARRIVAL', newTrainB);
-  const mergedTrainStatus = mergedTrain.bogies.length ?
-    journeyStatus('DEPARTURE', mergedTrain) : 'JOURNEY_ENDED';
-
-  return [trainAStatus, trainBStatus, mergedTrainStatus].join('\n');
+  return journeyDetails(newTrainA, newTrainB, mergedTrain);
 };
 
 module.exports = { startJourney, parseInput, parseTrain };
