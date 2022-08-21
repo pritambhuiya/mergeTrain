@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 const { Train } = require('./train.js');
 const { createRoute } = require('./route.js');
 
